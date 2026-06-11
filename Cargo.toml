@@ -1,0 +1,9 @@
+[package]
+name = "fragment-reassembler"
+version = "0.1.0"
+description = "A Rust library for Fragment Reassembler"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/casey-digennaro/fragment-reassembler"
+edition = "2021"
+
+[dependencies]
