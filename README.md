@@ -54,11 +54,16 @@ assert_eq!(r.assemble().unwrap(), b"ABCDEFGHIJKL"[..12]);
 
 This library provides the reliability layer for the SuperInstance message bus. When agents communicate over UDP or unreliable transports, messages exceeding the MTU are fragmented; this library ensures transparent reconstruction. It contributes to **η** (reflex) in **γ + η = C** — reassembly is automatic, requiring zero coordination overhead from the application layer. See [Architecture](https://github.com/SuperInstance/SuperInstance/blob/main/ARCHITECTURE.md).
 
+**Timeout and cleanup**: Fragments that never arrive (permanent gaps) must be garbage-collected. A common strategy is a timer per partial reassembly: if the timer expires before completion, the partial buffer is discarded to prevent memory leaks from malformed or malicious senders.
+
+**Security**: Fragment reassembly is the target of several well-known attacks (teardrop, overlap attacks). A robust reassembler validates that fragment offsets don't overlap maliciously and rejects fragments claiming to extend beyond the expected total length.
+
 ## References
 
 - Postel, J. RFC 791: "Internet Protocol — Fragmentation and Reassembly," 1981.
 - Stewart, R. RFC 4960: "Stream Control Transmission Protocol," 2007.
 - Wood, L. et al. "TCP and IP Fragment Reassembly," ACM SIGCOMM CCR (2002).
+- Kent, C. & Mogul, J. "Fragmentation Considered Harmful," DEC WRL Tech Report (1987).
 
 ## License
 
